@@ -1,0 +1,34 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Eateries.Models
+@model Eateries.Models.Tag
+
+<h2>Tag Details</h2>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.Title): @Html.DisplayFor(model => model.Title)</h3>
+@if (@Model.JoinEntities.Count == 0)
+{
+  <p>This tag does not belong to any items.</p>
+}
+else
+{
+  <h4>The Restaurant(s) the tag belongs to is:</h4>
+  <ul>
+  @foreach (RestaurantTag join in Model.JoinEntities)
+    {
+      <li>@join.Restaurants.Description</li>
+      @using (Html.BeginForm("DeleteJoin", "Tags"))
+      {
+        @Html.Hidden("joinId", @join.RestaurantTagId)
+        <input type="submit" value="Delete" />
+      }
+    }
+  </ul>
+}
+
+<p>@Html.ActionLink("Back to list", "Index")</p>
+<p>@Html.ActionLink("Add a restaurant", "AddRestaurant", new { id = Model.TagId })</p>
+<p>@Html.ActionLink("Edit Tag", "Edit", new { id = Model.TagId })</p>
+<p>@Html.ActionLink("Delete Tag", "Delete", new { id = Model.TagId })</p>
